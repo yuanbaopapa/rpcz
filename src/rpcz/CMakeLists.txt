@@ -30,7 +30,7 @@ target_link_libraries(rpcz ${RPCZ_LIB_DEPS})
 set(RPCZ_TARGET_LIBS rpcz)
 
 add_executable(zsendrpc zsendrpc.cc)
-target_link_libraries(zsendrpc rpcz ${Boost_PROGRAM_OPTIONS_LIBRARIES} ws2_32)
+target_link_libraries(zsendrpc rpcz ws2_32)
 
 install(TARGETS ${RPCZ_TARGET_LIBS} zsendrpc
   RUNTIME DESTINATION bin

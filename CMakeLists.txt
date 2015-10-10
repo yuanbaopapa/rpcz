@@ -33,9 +33,9 @@ if(WIN32)
     #set(Boost_USE_MULTITHREADED ON)
     #set(Boost_USE_STATIC_RUNTIME OFF)
     # date_time is required only on Windows
-    find_package(Boost REQUIRED COMPONENTS thread program_options system date_time)
+    #find_package(Boost REQUIRED COMPONENTS thread program_options system date_time)
 else()
-    find_package(Boost REQUIRED COMPONENTS thread program_options system)
+    #find_package(Boost REQUIRED COMPONENTS thread program_options system)
 endif()
 
 find_package(ZeroMQ REQUIRED)
