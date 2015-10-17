@@ -47,10 +47,12 @@ IF (UNIX)
 ELSEIF (WIN32)
 
     # Find C header file
+	if(NOT ZeroMQ_INCLUDE_DIR)
 	find_path(ZeroMQ_INCLUDE_DIR
 	  NAMES zmq.hpp
 	  PATHS ${ZEROMQ_ROOT}/include ${CMAKE_INCLUDE_PATH}
 	)
+	endif()
 
     ZMQ_VERSION_LOOKUP(${ZeroMQ_INCLUDE_DIR} ZMQ_VERSION_MAJOR ZMQ_VERSION_MINOR ZMQ_VERSION_PATCH ZeroMQ_VERSION)
     set(ZeroMQ_LIB_VERSION "${ZMQ_VERSION_MAJOR}_${ZMQ_VERSION_MINOR}_${ZMQ_VERSION_PATCH}")
@@ -65,15 +67,19 @@ ELSEIF (WIN32)
       set(ZMQ_COMPILER_STRING "")
     endif()
 
+	if(NOT ZeroMQ_LIBRARY_RELEASE)
     find_library(ZeroMQ_LIBRARY_RELEASE
       NAMES libzmq libzmq${ZMQ_COMPILER_STRING}-mt-${ZeroMQ_LIB_VERSION}
       PATHS ${ZEROMQ_ROOT}/lib ${CMAKE_LIB_PATH}
     )
+	endif()
     
+	if(NOT ZeroMQ_LIBRARY_DEBUG)
     find_library(ZeroMQ_LIBRARY_DEBUG
       NAMES libzmq${ZMQ_COMPILER_STRING}-mt-gd-${ZeroMQ_LIB_VERSION}
       PATHS ${ZEROMQ_ROOT}/lib ${CMAKE_LIB_PATH}
     )
+	endif()
     
     if(ZeroMQ_LIBRARY_RELEASE AND ZeroMQ_LIBRARY_DEBUG)
         set(ZeroMQ_LIBRARY 

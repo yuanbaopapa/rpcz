@@ -167,28 +167,9 @@ endfunction()
 #    if the debug one is specified also include debug/optimized keywords
 #    in *_LIBRARIES variable
 function(_protobuf_find_libraries name filename)
-   find_library(${name}_LIBRARY
-       NAMES ${filename}
-       PATHS ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Release)
-   mark_as_advanced(${name}_LIBRARY)
-
-   find_library(${name}_LIBRARY_DEBUG
-       NAMES ${filename}
-       PATHS ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Debug)
-   mark_as_advanced(${name}_LIBRARY_DEBUG)
-
-   if(NOT ${name}_LIBRARY_DEBUG)
-      # There is no debug library
-      set(${name}_LIBRARY_DEBUG ${${name}_LIBRARY} PARENT_SCOPE)
-      set(${name}_LIBRARIES     ${${name}_LIBRARY} PARENT_SCOPE)
-   else()
-      # There IS a debug library
-      set(${name}_LIBRARIES
-          optimized ${${name}_LIBRARY}
-          debug     ${${name}_LIBRARY_DEBUG}
-          PARENT_SCOPE
-      )
-   endif()
+	set(${name}_LIBRARIES     ${${name}_LIBRARY} PARENT_SCOPE)
+	
+   
 endfunction()
 
 #
@@ -226,15 +207,18 @@ if(MSVC)
     set(CMAKE_FIND_LIBRARY_PREFIXES "${PROTOBUF_ORIG_FIND_LIBRARY_PREFIXES}")
 endif()
 
-
 # Find the include directory
+if(NOT PROTOBUF_INCLUDE_DIR)
 find_path(PROTOBUF_INCLUDE_DIR
     google/protobuf/service.h
     PATHS ${PROTOBUF_SRC_ROOT_FOLDER}/src
 )
+endif()
 mark_as_advanced(PROTOBUF_INCLUDE_DIR)
 
+
 # Find the protoc Executable
+if(NOT PROTOBUF_PROTOC_EXECUTABLE)
 find_program(PROTOBUF_PROTOC_EXECUTABLE
     NAMES protoc
     DOC "The Google Protocol Buffers Compiler"
@@ -242,12 +226,13 @@ find_program(PROTOBUF_PROTOC_EXECUTABLE
     ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Release
     ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Debug
 )
+endif()
 mark_as_advanced(PROTOBUF_PROTOC_EXECUTABLE)
 
 
 include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(PROTOBUF DEFAULT_MSG
-    PROTOBUF_LIBRARY PROTOBUF_INCLUDE_DIR)
+    PROTOBUF_INCLUDE_DIR)
 
 if(PROTOBUF_FOUND)
     set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
