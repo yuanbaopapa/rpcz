@@ -6,7 +6,7 @@ from distutils.command import build as build_module
 from distutils.extension import Extension
 from distutils.core import setup
 
-BUILD_DIR='../build'
+BUILD_DIR=os.environ['build_dir']
 
 def _build_rpcz_proto():
     compiler.generate_proto('../src/rpcz/proto/rpcz.proto', 'rpcz')
@@ -39,6 +39,8 @@ class gen_pyext(Command):
         if os.system('cython --cplus cython/pywraprpcz.pyx') != 0:
             raise IOError("Running cython failed.")
 
+all_library_dirs=[ BUILD_DIR + '/deps/lib', BUILD_DIR + '/src/rpcz']
+all_library_dirs.extend(os.environ['link_dir'].split(';'))
 
 setup(
     name = "rpcz",
@@ -62,9 +64,16 @@ setup(
     },
     ext_modules=[
         Extension("rpcz.pywraprpcz", ["cython/pywraprpcz.cpp"],
-                  libraries=["rpcz"],
-                  include_dirs=['../include', BUILD_DIR + '/src'],
-                  library_dirs=[ BUILD_DIR + '/deps/lib', BUILD_DIR + '/src/rpcz'],
-                  language='c++')
+                  libraries=["rpcz","libprotobuf","libzmq-static","python27","ws2_32","rpcrt4","iphlpapi"],
+                  include_dirs=['../include', BUILD_DIR + '/src',os.environ['BOOST_ROOT'],os.environ['PROTOBUF_SRC_ROOT_FOLDER'],os.environ['ZEROMQ_ROOT']],
+                  library_dirs=all_library_dirs,
+                  language='c++',
+				  #extra_compile_args=['/MTd'],
+				  extra_compile_args=['/MTd','/DPy_NO_ENABLE_SHARED','/D_DEBUG'],
+				  undef_macros=['NDEBUG']
+				  #define_macros=['Py_NO_ENABLE_SHARED','_DEBUG']
+				  )
     ],
 )
+
+
