@@ -9,9 +9,9 @@ set(RPCZ_SOURCES
     reactor.cc rpc.cc rpc_channel_impl.cc server.cc
     sync_event.cc zmq_utils.cc
     ${PROTO_SOURCES})
-set(RPCZ_LIB_DEPS ${ZeroMQ_LIBRARIES}
-                  ${PROTOBUF_LIBRARIES}
-                  ${Boost_LIBRARIES})
+
+#set(RPCZ_LIB_DEPS ${ZeroMQ_LIBRARIES} ${PROTOBUF_LIBRARIES} ${Boost_LIBRARIES})
+set(RPCZ_LIB_DEPS libzmq-static libprotobuf ${Boost_LIBRARIES})
 
 if (RPCZ_ENABLE_IPV6)
 	set_source_files_properties(
@@ -30,7 +30,7 @@ target_link_libraries(rpcz ${RPCZ_LIB_DEPS})
 set(RPCZ_TARGET_LIBS rpcz)
 
 add_executable(zsendrpc zsendrpc.cc)
-target_link_libraries(zsendrpc rpcz ws2_32)
+target_link_libraries(zsendrpc rpcz)
 
 install(TARGETS ${RPCZ_TARGET_LIBS} zsendrpc
   RUNTIME DESTINATION bin
