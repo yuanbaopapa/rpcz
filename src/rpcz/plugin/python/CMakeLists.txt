@@ -3,7 +3,7 @@ include_directories(${PROTOBUF_INCLUDE_DIR})
 
 set(RPCZ_SRCS rpcz_python_generator.cc rpcz_python_main.cc)
 add_executable(protoc-gen-python_rpcz ${RPCZ_SRCS})
-target_link_libraries(protoc-gen-python_rpcz
-    ${PROTOBUF_LIBRARIES} ${PROTOBUF_PROTOC_LIBRARIES})
+#target_link_libraries(protoc-gen-python_rpcz ${PROTOBUF_LIBRARIES} ${PROTOBUF_PROTOC_LIBRARIES})
+target_link_libraries(protoc-gen-python_rpcz libprotobuff libprotoc)
 install(TARGETS protoc-gen-python_rpcz
     RUNTIME DESTINATION bin)
