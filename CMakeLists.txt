@@ -9,7 +9,7 @@ set(RPCZ_VERSION_PATCH 0)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 if (NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release")
+  #set(CMAKE_BUILD_TYPE "Release")
 endif()
 message("-- Build type: ${CMAKE_BUILD_TYPE}")
 
