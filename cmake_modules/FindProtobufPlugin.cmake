@@ -154,7 +154,7 @@ function(PROTOBUF_GENERATE_SINGLE)
   get_filename_component(ABS_FILE ${OPTIONS_FILE} ABSOLUTE)
   add_custom_command(
     OUTPUT ${OPTIONS_OUTPUTS}
-	COMMAND ${MY_PROJECT_BIN_DIR}/../$<CONFIG>/protoc.exe
+	COMMAND ${MY_PROJECT_BIN_DIR}/protoc.exe
 	
     ARGS --${OPTIONS_PLUGIN}_out  ${CMAKE_CURRENT_BINARY_DIR} ${OPTIONS_FLAGS}
          ${ABS_FILE}
