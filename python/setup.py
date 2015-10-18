@@ -40,7 +40,7 @@ class gen_pyext(Command):
             raise IOError("Running cython failed.")
 
 all_library_dirs=[ BUILD_DIR + '/deps/lib', BUILD_DIR + '/src/rpcz']
-all_library_dirs.extend(os.environ['link_dir'].split(';'))
+all_library_dirs.extend(os.environ['link_dirs'].split(';'))
 
 setup(
     name = "rpcz",
@@ -64,13 +64,13 @@ setup(
     },
     ext_modules=[
         Extension("rpcz.pywraprpcz", ["cython/pywraprpcz.cpp"],
-                  libraries=["rpcz","libprotobuf","libzmq-static","python27","ws2_32","rpcrt4","iphlpapi"],
+                  libraries=["rpcz","libprotobuf","libzmq-static","python27","ws2_32","rpcrt4","iphlpapi","advapi32"],
                   include_dirs=['../include', BUILD_DIR + '/src',os.environ['BOOST_ROOT'],os.environ['PROTOBUF_SRC_ROOT_FOLDER'],os.environ['ZEROMQ_ROOT']],
                   library_dirs=all_library_dirs,
                   language='c++',
-				  #extra_compile_args=['/MTd'],
-				  extra_compile_args=['/MTd','/DPy_NO_ENABLE_SHARED','/D_DEBUG'],
-				  undef_macros=['NDEBUG']
+				  extra_compile_args=['/MT'],
+				  #extra_compile_args=['/MTd','/DPy_NO_ENABLE_SHARED','/D_DEBUG'],
+				  #undef_macros=['NDEBUG']
 				  #define_macros=['Py_NO_ENABLE_SHARED','_DEBUG']
 				  )
     ],
