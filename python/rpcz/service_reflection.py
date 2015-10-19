@@ -1,4 +1,11 @@
-#!/usr/bin/env python
+# coding=utf-8
+# python 2.7
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+import six
+
 import rpcz.rpc
 from rpcz import rpcz_pb2
 
@@ -12,13 +19,13 @@ def _call_method(service, method, request_proto, channel):
     request = method_descriptor.input_type._concrete_class()
     # TODO: error handling
     request.ParseFromString(request_proto)
-    handler(request, channel)     
-         
+    handler(request, channel)
+
 
 def _default_handler(service, request, channel):
     channel.send_error(rpcz_pb2.rpc_response_header.METHOD_NOT_IMPLEMENTED)
 
-    
+
 class GeneratedServiceType(type):
     def __new__(cls, name, bases, attrs):
         if 'DESCRIPTOR' not in attrs:
@@ -41,19 +48,20 @@ def _BuildStubMethod(method_descriptor):
         response = method_descriptor.output_type._concrete_class()
         if rpc is None:
             blocking_mode = True
-            rpc = rpcz.rpc.RPC(deadline_ms = deadline_ms)
+            rpc = rpcz.rpc.RPC(deadline_ms=deadline_ms)
         else:
             blocking_mode = False
             if deadline_ms is not None:
-              raise ValueError("'rpc' and 'deadline_ms' cannot be both "
-                               "specified. Use rpc.deadline_ms to set a "
-                               "deadline")
+                raise ValueError("'rpc' and 'deadline_ms' cannot be both "
+                                 "specified. Use rpc.deadline_ms to set a "
+                                 "deadline")
         stub._channel.call_method(stub._service_name,
                                   method_descriptor.name,
                                   request, response, rpc, callback)
         if blocking_mode:
             rpc.wait()
             return response
+
     return call
 
 
