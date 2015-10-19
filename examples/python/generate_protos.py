@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+# coding=utf-8
+# python 2.7
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
@@ -16,4 +17,4 @@ compiler.generate_proto(
         '../common/search.proto', '.',
         with_plugin='python_rpcz', suffix='_rpcz.py',
         plugin_binary=
-            my_bin_dir+r'\protoc-gen-python_rpcz')
+            my_bin_dir+r'\protoc-gen-python_rpcz.exe')
